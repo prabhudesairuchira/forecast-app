@@ -1,0 +1,35 @@
+<div class="container forecast">
+  <form [formGroup]="cityForm" id="city-form" class="form" (ngSubmit)="getForecast()">
+    <div class="form-group col-md-6 p-0">
+      <label title="Select city name to get 5 day forecast">Select city name to get 5 day weather forecast</label>
+      <select title="choose city from dropdown" id="inputState" class="form-control" formControlName="city">
+        <option> Choose...</option>
+        <option>Montreal</option>
+        <option selected>Toronto</option>
+        <option>Vancouver</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <button type="submit" title="Get Forecast" class="btn dark-bg light-font btn-block w-auto"> Get Forecast  </button>
+  </div>
+  </form>
+  <h2 *ngIf="this.city">5 day weather forecast for {{this.city? this.city: ''}}, Canada</h2>
+  <table class="table table-striped table-bordered table-sm">
+    <thead>
+      <tr>
+        <th scope="col">Day</th>
+        <th scope="col">Temperature(minimum)</th>
+        <th scope="col">Temperature(maximum)</th>
+        <th scope="col">Temperature(average)</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="weatherData">
+      <tr *ngFor="let data of weatherData.daily | slice:0:5; let i= index ">
+        <th scope="row">{{i+1}}</th>
+        <td>{{data.temp.min? data.temp.min :''}}</td>
+        <td>{{data.temp.max? data.temp.max :''}}</td>
+        <td>{{((data.temp.min + data.temp.max)/2).toFixed(2)}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
