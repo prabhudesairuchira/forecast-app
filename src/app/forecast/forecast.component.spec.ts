@@ -9,6 +9,7 @@ describe('ForecastComponent', () => {
   let fixture: ComponentFixture<ForecastComponent>;
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ForecastComponent ],
@@ -23,11 +24,26 @@ describe('ForecastComponent', () => {
     component = fixture.componentInstance;
     component.ngOnInit();
 
-    // httpClient = TestBed.inject(HttpClient);
-    // httpTestingController = TestBed.inject(HttpTestingController);
+    httpClient = TestBed.get(HttpClient);
+    httpTestingController = TestBed.get(HttpTestingController);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('form invalid when empty', () => {
+    expect(component.cityForm.valid).toBeFalsy();
+  });
+
+  it('form gets submitted if valid', () => {
+    expect(component.cityForm.valid).toBeFalsy();
+    component.cityForm.controls['city'].setValue("Toronto");
+    component.submit();
+    expect(component.isSubmitted).toBeTruthy();
+  });
+  it('form does not get submitted if invalid', () => {
+    component.submit();
+    expect(component.cityForm.invalid).toBeTruthy();
+  });
+
 });

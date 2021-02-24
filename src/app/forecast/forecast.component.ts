@@ -14,6 +14,8 @@ export class ForecastComponent implements OnInit {
   long: any;
   city: any;
   avg: any;
+  isSubmitted = false;
+  displayResults = false;
   constructor(private httpClient: HttpClient, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -24,7 +26,18 @@ export class ForecastComponent implements OnInit {
 
 get f() { return this.cityForm.controls; }
 
-getForecast(event: any){
+submit(){
+  this.isSubmitted = true;
+  if(this.cityForm.invalid){
+    return;
+  }
+  else{
+    this.displayResults = true;
+    return this.getForecast();
+  }
+}
+
+getForecast(){
   this.city = this.cityForm.value.city;
   switch (this.city) {
     case "Montreal" :
@@ -46,10 +59,8 @@ getForecast(event: any){
       this.avg = (this.lat + this.long)/2;
     }
   }
-  console.log("selected coord",this.lat, this.long);
     this.httpClient.get("https://api.openweathermap.org/data/2.5/onecall?lat="+this.lat+"&lon="+this.long+"&exclude=hourly,minutely&units=metric&appid=5a349da13a1b63ebdd3c0f19d1c06bd9").subscribe(res =>{
     this.weatherData = res;
-    console.log(this.weatherData);
   })
 
 

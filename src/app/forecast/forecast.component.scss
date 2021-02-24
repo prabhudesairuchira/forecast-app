@@ -1,4 +1,14 @@
 
 .forecast{
   margin: 50px 0;
+  .invalid-feedback{
+    margin: 20px 0;
+  }
+  .btn{
+    &:hover{
+      transform: scale(1.05);
+      transition: 0.3s ease;
+      color: #eee;
+    }
+  }
 }

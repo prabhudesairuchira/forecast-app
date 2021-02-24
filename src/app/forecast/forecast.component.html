@@ -1,6 +1,6 @@
 <div class="container forecast">
-  <form [formGroup]="cityForm" id="city-form" class="form" (ngSubmit)="getForecast()">
-    <div class="form-group col-md-6 p-0">
+  <form [formGroup]="cityForm" id="city-form" class="form" (ngSubmit)="submit()">
+    <div class="form-group col-md-6 p-0"  [ngClass]="{ 'is-invalid': isSubmitted && cityForm.controls.city.errors }">
       <label title="Select city name to get 5 day forecast">Select city name to get 5 day weather forecast</label>
       <select title="choose city from dropdown" id="inputState" class="form-control" formControlName="city">
         <option> Choose...</option>
@@ -9,12 +9,15 @@
         <option>Vancouver</option>
       </select>
     </div>
+    <div *ngIf="isSubmitted && cityForm.controls.city.errors" class="invalid-feedback">
+      <div *ngIf="cityForm.controls.city.errors .required">Please select city</div>
+  </div>
     <div class="form-group">
       <button type="submit" title="Get Forecast" class="btn dark-bg light-font btn-block w-auto"> Get Forecast  </button>
   </div>
   </form>
-  <h2 *ngIf="this.city">5 day weather forecast for {{this.city? this.city: ''}}, Canada</h2>
-  <table class="table table-striped table-bordered table-sm">
+  <h2 *ngIf="this.cityForm.valid && this.displayResults">5 day weather forecast for {{this.city? this.city: ''}}, Canada</h2>
+  <table class="table table-striped table-sm table-responsive" *ngIf="displayResults && cityForm.valid">
     <thead>
       <tr>
         <th scope="col">Day</th>
